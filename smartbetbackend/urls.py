@@ -21,8 +21,16 @@ from users.update import ChangeRole,ChangeEmail,ChangeName,ChangePassword
 from analysis.views import GetAnalysisView,AnalysisView,AnalysisViewChangeTitle,AnalysisViewChangeContent
 from articles.views import GetArticlesView,ArticlesView,ArticlesViewChangeTitle,ArticlesViewChangeContent
 from tips.views import GetTipsView,TipsView,TipsViewChangeTitle,TipsViewChangeContent
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
     path('admin/', admin.site.urls),
     path("api/userlist/",UserListViews.as_view()),
     path("api/user/",UserCreatedView.as_view()),

@@ -24,6 +24,10 @@ class GetArticlesView(APIView):
             return Response({"message":"could not found articles"},status=status.HTTP_404_NOT_FOUND)
         
 class ArticlesView(APIView):
+    def get(self,request,format='json'):
+        art=ArticlesModel.objects.all()
+        art_s=ArticlesSerializer(art,many=True)
+        return Response(art_s.data)
     
     def post(self,request,format='json'):
         serializer=ArticlesSerializer(data=request.data)

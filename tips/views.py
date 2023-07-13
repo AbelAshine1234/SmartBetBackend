@@ -24,15 +24,25 @@ class GetTipsView(APIView):
             return Response({"message":"could not found tips"},status=status.HTTP_404_NOT_FOUND)
         
 class TipsView(APIView):
+    def get(self,request,format='json'):
+        tips=TipsModel.objects.all()
+        tips_serialized=TipsSerializer(tips,many=True)
+        print(tips)
+        return Response(tips_serialized.data)
     
     def post(self,request,format='json'):
         serializer=TipsSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            try:
+                TipsModel.objects.create(title=serializer.data["title"],content=serializer.data["content"])
+            except:
+                return Response({"message":"could not create user"})
+            return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 class TipsViewChangeTitle(APIView):
     def put(self,request,pk,format='json'):
+        if (request.data.get("title") is None):
+            return Response({"message":"title is requrired"},status=status.HTTP_400_BAD_REQUEST)
         try:
             tips=TipsModel.objects.get(pk=pk)
         except:

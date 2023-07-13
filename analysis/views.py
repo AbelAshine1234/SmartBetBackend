@@ -24,6 +24,10 @@ class GetAnalysisView(APIView):
             return Response({"message":"could not found analysis"},status=status.HTTP_404_NOT_FOUND)
         
 class AnalysisView(APIView):
+    def get(self,request,format='json'):
+        analysis=AnalysisModel.objects.all();
+        analysis_serializer=AnalysisSerializer(analysis,many=True)
+        return Response(analysis_serializer.data)
     
     def post(self,request,format='json'):
         serializer=AnalysisSerializer(data=request.data)

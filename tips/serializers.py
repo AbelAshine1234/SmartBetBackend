@@ -1,10 +1,12 @@
 from rest_framework import serializers
-from analysis.models import AnalysisModel
+from tips.models import TipsModel
 class TipsSerializer(serializers.Serializer):
+    id=serializers.CharField(required=False)
     title=serializers.CharField(required=True)
     content=serializers.CharField(required=True)
     class Meta:
-        model=AnalysisModel
+        model=TipsModel
         fields="__all__"
     def create(self, validated_data):
-        return AnalysisModel.objects.create(**validated_data)
+        # return "d"
+        return TipsModel.objects.create(**validated_data)
